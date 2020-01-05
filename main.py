@@ -22,10 +22,22 @@ def cleansing(gps_data):
     return [gps_matrix,[lat_list,log_list,school_id_list,school_name]]
 
 gps_dataset = pd.read_csv("Badin2.csv")
-talukas = ['Matli','Golarchi-S.F.Rao','Tando Bago','Badin','Talhar']
+talukas = {1:'Matli',2:'Golarchi-S.F.Rao',3:'Tando Bago',4:'Badin',5:'Talhar'}
+ucs = {1:{1:'Malhan',2:'Tharee'},2:{1:'Dubi'},3:{1:'Khoski-Tc'},4:{1:'Seerani'},5:{1:'Talhar-Tc'}}
+print("Please select taluka:")
+print("1= Matli\n2=Golarchi-S.F.Rao\n3=Tando Bago\n4=Badin\n5=Talhar")
+taluka = int(input("Please enter taluka: "))
+taluka_name = talukas[taluka]
+if(taluka>=1 and taluka <=5):
+    for key,uc in ucs[taluka].items():
+        print(key," = ", uc)
+    uc_num = int(input("Please enter "+taluka_name+" UC: "))
+else:
+    print("Please enter correct number")    
 #filter with Tehsil and UC
 #school_data = gps_dataset.query('TEHSIL=="Golarchi-S.F.Rao" and UC == "Dubi"')
-school_data = gps_dataset.query('TEHSIL=="Matli" and UC=="Malhan"')
+uc_name = ucs[taluka][uc_num]
+school_data = gps_dataset.query('TEHSIL=="'+taluka_name+'" and UC=="'+uc_name+'"')
 X = cleansing(school_data)
 lat = X[1][0]
 log = X[1][1]
