@@ -1,1 +1,0 @@
-# Sindh-Schools-Clusting-Based-on-GPS-Data
