@@ -27,36 +27,42 @@ ucs = {1:{1:'Malhan',2:'Tharee'},2:{1:'Dubi'},3:{1:'Khoski-Tc'},4:{1:'Seerani'},
 print("Please select taluka:")
 print("1= Matli\n2=Golarchi-S.F.Rao\n3=Tando Bago\n4=Badin\n5=Talhar")
 taluka = int(input("Please enter taluka: "))
-taluka_name = talukas[taluka]
+
 if(taluka>=1 and taluka <=5):
+    taluka_name = talukas[taluka]
     for key,uc in ucs[taluka].items():
         print(key," = ", uc)
     uc_num = int(input("Please enter "+taluka_name+" UC: "))
 else:
-    print("Please enter correct number")    
+    print("Please enter correct number")  
+    
 #filter with Tehsil and UC
 #school_data = gps_dataset.query('TEHSIL=="Golarchi-S.F.Rao" and UC == "Dubi"')
-uc_name = ucs[taluka][uc_num]
-school_data = gps_dataset.query('TEHSIL=="'+taluka_name+'" and UC=="'+uc_name+'"')
-X = cleansing(school_data)
-lat = X[1][0]
-log = X[1][1]
-school_id = X[1][2]
-school_name = X[1][3]
-gps_list = []
-for i,j in zip(lat,log):
-    gps_list.append([i,j])
-# Distance Matrix
-coord_mat = pd.DataFrame(gps_list,columns=['lat','log'],index = school_name)
-#distance_mat = pd.DataFrame(distance_matrix(coord_mat.values,coord_mat.values),index=coord_mat.index,columns=coord_mat.index)
-z = linkage(gps_list,
-            method='single',    
-                                
-            metric='euclidean'
-    )                           
-                                
-
-# visualize dendrogram
-plt.figure(figsize=(30, 10))
-dendrogram(z,labels=coord_mat.index)
-plt.show()
+try:
+        
+    uc_name = ucs[taluka][uc_num]
+    school_data = gps_dataset.query('TEHSIL=="'+taluka_name+'" and UC=="'+uc_name+'"')
+    X = cleansing(school_data)
+    lat = X[1][0]
+    log = X[1][1]
+    school_id = X[1][2]
+    school_name = X[1][3]
+    gps_list = []
+    for i,j in zip(lat,log):
+        gps_list.append([i,j])
+    # Distance Matrix
+    coord_mat = pd.DataFrame(gps_list,columns=['lat','log'],index = school_name)
+    #distance_mat = pd.DataFrame(distance_matrix(coord_mat.values,coord_mat.values),index=coord_mat.index,columns=coord_mat.index)
+    z = linkage(gps_list,
+                method='single',    
+                                    
+                metric='euclidean'
+        )                           
+                                    
+    
+    # visualize dendrogram
+    plt.figure(figsize=(30, 10))
+    dendrogram(z,labels=coord_mat.index)
+    plt.show()
+except:
+    print("")
