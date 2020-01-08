@@ -12,11 +12,11 @@ def elbow_method(lat,log):
     X_axis = log
     score = [kmeans[i].fit(Y_axis).score(Y_axis) for i in range(len(kmeans))]
     # Visualize
-    pt.plot(K_clusters, score)
-    pt.xlabel('Number of Clusters')
-    pt.ylabel('Score')
-    pt.title('Elbow Curve')
-    pt.show()
+    plt.plot(K_clusters, score)
+    plt.xlabel('Number of Clusters')
+    plt.ylabel('Score')
+    plt.title('Elbow Curve')
+    plt.show()
   
 
 # data preprocessing
@@ -51,7 +51,6 @@ else:
     print("Please enter correct number")  
     
 #filter with Tehsil and UC
-#school_data = gps_dataset.query('TEHSIL=="Golarchi-S.F.Rao" and UC == "Dubi"')
 try:
         
     uc_name = ucs[taluka][uc_num]
@@ -77,11 +76,10 @@ try:
     #predicted = c.fit_predict(gps_list)
     predicted = c.fit(gps_list)
     
-    
-    flag=0
     plt.scatter(lat,log, s =50, c='g')
     for i in predicted.cluster_centers_:
         plt.scatter(i[0],i[1] , s=500, c="r", marker="x")
+    
     plt.show()
     
     labels = predicted.labels_
@@ -98,7 +96,8 @@ try:
     df.sort_index(inplace=True)
     
     for i in range(len(hm_list)):
-         df.at(i,"Assigned HM",hm_list[i])
+         #df.at(i,"Assigned HM",hm_list[i])
+         df.at[i,"Assigned HM"] = hm_list[i]
     df.to_csv("school_clustering_report.csv")
 except:
     print("")
